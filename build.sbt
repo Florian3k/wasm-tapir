@@ -1188,8 +1188,8 @@ lazy val openapiDocs: ProjectMatrix = (projectMatrix in file("docs/openapi-docs"
     name := "tapir-openapi-docs",
     libraryDependencies ++= Seq(
       "com.softwaremill.quicklens" %%% "quicklens" % Versions.quicklens,
-      "com.softwaremill.sttp.apispec" %%% "openapi-model" % Versions.sttpApispec,
-      "com.softwaremill.sttp.apispec" %% "openapi-circe-yaml" % Versions.sttpApispec % Test
+      "com.softwaremill.sttp.apispec" %%% "openapi-model" % Versions.sttpApispec
+      // "com.softwaremill.sttp.apispec" %% "openapi-circe-yaml" % Versions.sttpApispec % Test
     )
   )
   .jvmPlatform(
