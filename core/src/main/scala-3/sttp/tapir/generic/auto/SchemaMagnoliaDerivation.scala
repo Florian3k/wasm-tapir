@@ -126,7 +126,17 @@ trait SchemaMagnoliaDerivation {
           val newInProgress = mutable.Set[String]()
           deriveCache.set(newInProgress)
           newInProgress
-        } else inProgressOrNull.nn
+        } else {
+          // NOTE: hand-inlined `.nn` because the scala-wasm fork's compiler
+          // (3.8.3-RC1-wasm-bin-SNAPSHOT) crashes at inlining time when this
+          // method body gets inlined into user code that triggers Schema
+          // derivation (e.g. `jsonBody[List[Foo]]`): "undefined: nn # -1:
+          // TermRef(... Predef, nn) at inlining". Replacing with the explicit
+          // null-check avoids referencing Predef.nn at the inlining site.
+          if (inProgressOrNull == null)
+            throw new NullPointerException("inProgressOrNull was null")
+          else inProgressOrNull.asInstanceOf[mutable.Set[String]]
+        }
 
         if (inProgress.contains(cacheKey)) {
           Schema[T](SRef(typeNameToSchemaName(typeName, annotations)))
