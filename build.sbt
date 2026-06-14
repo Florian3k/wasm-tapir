@@ -14,6 +14,21 @@ import java.net.URL
 import scala.concurrent.duration.DurationInt
 import scala.sys.process.Process
 
+ThisBuild / version := "1.13.5-WASM-1"
+ThisBuild / isSnapshot := false
+ThisBuild / homepage := Some(url("https://github.com/Florian3k/wasm-tapir"))
+ThisBuild / scmInfo := Some(ScmInfo(
+  url("https://github.com/Florian3k/wasm-tapir"),
+  "scm:git:https://github.com/Florian3k/wasm-tapir.git"
+))
+ThisBuild / developers += Developer(
+  id = "Florian3k",
+  name = "Florian3k",
+  email = "mfornal@virtuslab.com",
+  url = url("https://github.com/Florian3k")
+)
+
+
 val scala2_12 = "2.12.21"
 val scala2_13 = "2.13.18"
 val scala3 = "3.3.7"
@@ -60,7 +75,7 @@ def versionedScalaJvmSourceDirectories(sourceDir: File, scalaVersion: String): L
   }
 
 val commonSettings = commonSmlBuildSettings ++ ossPublishSettings ++ Seq(
-  organization := "com.softwaremill.sttp.tapir",
+  organization := "io.github.florian3k.sttp.tapir",
   Compile / unmanagedSourceDirectories ++= versionedScalaSourceDirectories((Compile / sourceDirectory).value, scalaVersion.value),
   Test / unmanagedSourceDirectories ++= versionedScalaSourceDirectories((Test / sourceDirectory).value, scalaVersion.value),
   updateDocs := Def.taskDyn {
@@ -438,9 +453,9 @@ lazy val core: ProjectMatrix = (projectMatrix in file("core"))
   .settings(
     name := "tapir-core",
     libraryDependencies ++= Seq(
-      "com.softwaremill.sttp.model" %%% "core" % Versions.sttpModel,
-      "com.softwaremill.sttp.shared" %%% "core" % Versions.sttpShared,
-      "com.softwaremill.sttp.shared" %%% "ws" % Versions.sttpShared,
+      "io.github.florian3k.sttp.model" %%% "core" % Versions.sttpModel,
+      "io.github.florian3k.sttp.shared" %%% "core" % Versions.sttpShared,
+      "io.github.florian3k.sttp.shared" %%% "ws" % Versions.sttpShared,
       scalaTest.value % Test,
       scalaCheck.value % Test,
       scalaTestPlusScalaCheck.value % Test
@@ -519,7 +534,7 @@ lazy val tests: ProjectMatrix = (projectMatrix in file("tests"))
   .settings(
     name := "tapir-tests",
     libraryDependencies ++= Seq(
-      "io.circe" %%% "circe-generic" % Versions.circe,
+      "io.github.florian3k.circe" %%% "circe-generic" % Versions.circe,
       "com.softwaremill.common" %%% "tagging" % "2.3.5",
       scalaTest.value,
       logback
@@ -809,9 +824,9 @@ lazy val circeJson: ProjectMatrix = (projectMatrix in file("json/circe"))
   .settings(
     name := "tapir-json-circe",
     libraryDependencies ++= Seq(
-      "io.circe" %%% "circe-core" % Versions.circe,
-      "io.circe" %%% "circe-parser" % Versions.circe,
-      "io.circe" %%% "circe-generic" % Versions.circe,
+      "io.github.florian3k.circe" %%% "circe-core" % Versions.circe,
+      "io.github.florian3k.circe" %%% "circe-parser" % Versions.circe,
+      "io.github.florian3k.circe" %%% "circe-generic" % Versions.circe,
       scalaTest.value % Test
     )
   )
@@ -1167,9 +1182,9 @@ lazy val apispecDocs: ProjectMatrix = (projectMatrix in file("docs/apispec-docs"
   .settings(
     name := "tapir-apispec-docs",
     libraryDependencies ++= Seq(
-      "com.softwaremill.sttp.apispec" %%% "asyncapi-model" % Versions.sttpApispec,
-      "com.softwaremill.sttp.apispec" %%% "jsonschema-circe" % Versions.sttpApispec % Test,
-      "io.circe" %%% "circe-literal" % Versions.circe % Test
+      "io.github.florian3k.sttp.apispec" %%% "asyncapi-model" % Versions.sttpApispec,
+      "io.github.florian3k.sttp.apispec" %%% "jsonschema-circe" % Versions.sttpApispec % Test,
+      "io.github.florian3k.circe" %%% "circe-literal" % Versions.circe % Test
     )
   )
   .jvmPlatform(
@@ -1188,8 +1203,8 @@ lazy val openapiDocs: ProjectMatrix = (projectMatrix in file("docs/openapi-docs"
     name := "tapir-openapi-docs",
     libraryDependencies ++= Seq(
       "com.softwaremill.quicklens" %%% "quicklens" % Versions.quicklens,
-      "com.softwaremill.sttp.apispec" %%% "openapi-model" % Versions.sttpApispec
-      // "com.softwaremill.sttp.apispec" %% "openapi-circe-yaml" % Versions.sttpApispec % Test
+      "io.github.florian3k.sttp.apispec" %%% "openapi-model" % Versions.sttpApispec
+      // "io.github.florian3k.sttp.apispec" %% "openapi-circe-yaml" % Versions.sttpApispec % Test
     )
   )
   .jvmPlatform(
@@ -1207,9 +1222,9 @@ lazy val openapiVerifier: ProjectMatrix = (projectMatrix in file("docs/openapi-v
   .settings(
     name := "tapir-openapi-verifier",
     libraryDependencies ++= Seq(
-      "com.softwaremill.sttp.apispec" %% "openapi-circe-yaml" % Versions.sttpApispec % Test,
-      "com.softwaremill.sttp.apispec" %%% "openapi-circe" % Versions.sttpApispec,
-      "io.circe" %%% "circe-parser" % Versions.circe,
+      "io.github.florian3k.sttp.apispec" %% "openapi-circe-yaml" % Versions.sttpApispec % Test,
+      "io.github.florian3k.sttp.apispec" %%% "openapi-circe" % Versions.sttpApispec,
+      "io.github.florian3k.circe" %%% "circe-parser" % Versions.circe,
       "io.circe" %% "circe-yaml" % Versions.circeYaml
     )
   )
@@ -1232,8 +1247,8 @@ lazy val asyncapiDocs: ProjectMatrix = (projectMatrix in file("docs/asyncapi-doc
   .settings(
     name := "tapir-asyncapi-docs",
     libraryDependencies ++= Seq(
-      "com.softwaremill.sttp.apispec" %% "asyncapi-model" % Versions.sttpApispec,
-      "com.softwaremill.sttp.apispec" %% "asyncapi-circe-yaml" % Versions.sttpApispec % Test,
+      "io.github.florian3k.sttp.apispec" %% "asyncapi-model" % Versions.sttpApispec,
+      "io.github.florian3k.sttp.apispec" %% "asyncapi-circe-yaml" % Versions.sttpApispec % Test,
       "com.typesafe.akka" %% "akka-stream" % Versions.akkaStreams % Test,
       "com.softwaremill.sttp.shared" %% "akka" % Versions.sttpShared % Test
     )
@@ -1255,7 +1270,7 @@ lazy val swaggerUiBundle: ProjectMatrix = (projectMatrix in file("docs/swagger-u
   .settings(
     name := "tapir-swagger-ui-bundle",
     libraryDependencies ++= Seq(
-      "com.softwaremill.sttp.apispec" %% "openapi-circe-yaml" % Versions.sttpApispec,
+      "io.github.florian3k.sttp.apispec" %% "openapi-circe-yaml" % Versions.sttpApispec,
       "org.http4s" %% "http4s-blaze-server" % Versions.http4sBlazeServer % Test,
       scalaTest.value % Test
     )
@@ -1281,7 +1296,7 @@ lazy val redocBundle: ProjectMatrix = (projectMatrix in file("docs/redoc-bundle"
   .settings(
     name := "tapir-redoc-bundle",
     libraryDependencies ++= Seq(
-      "com.softwaremill.sttp.apispec" %% "openapi-circe-yaml" % Versions.sttpApispec,
+      "io.github.florian3k.sttp.apispec" %% "openapi-circe-yaml" % Versions.sttpApispec,
       "org.http4s" %% "http4s-blaze-server" % Versions.http4sBlazeServer % Test,
       scalaTest.value % Test
     )
@@ -1462,11 +1477,11 @@ lazy val sttpMockServer: ProjectMatrix = (projectMatrix in file("server/sttp-moc
     name := "sttp-mock-server",
     libraryDependencies ++= Seq(
       "com.softwaremill.sttp.client4" %%% "core" % Versions.sttp4,
-      "io.circe" %% "circe-core" % Versions.circe,
-      "io.circe" %% "circe-parser" % Versions.circe,
-      "io.circe" %% "circe-generic" % Versions.circe,
+      "io.github.florian3k.circe" %% "circe-core" % Versions.circe,
+      "io.github.florian3k.circe" %% "circe-parser" % Versions.circe,
+      "io.github.florian3k.circe" %% "circe-generic" % Versions.circe,
       // test libs
-      "io.circe" %% "circe-literal" % Versions.circe % Test,
+      "io.github.florian3k.circe" %% "circe-literal" % Versions.circe % Test,
       "org.mock-server" % "mockserver-netty" % Versions.mockServer % Test
     )
   )
@@ -1905,7 +1920,7 @@ lazy val awsSam: ProjectMatrix = (projectMatrix in file("serverless/aws/sam"))
     name := "tapir-aws-sam",
     libraryDependencies ++= Seq(
       "io.circe" %% "circe-yaml" % Versions.circeYaml,
-      "io.circe" %% "circe-generic" % Versions.circe
+      "io.github.florian3k.circe" %% "circe-generic" % Versions.circe
     )
   )
   .jvmPlatform(scalaVersions = scala2And3Versions, settings = commonJvmSettings)
@@ -1918,8 +1933,8 @@ lazy val awsCdk: ProjectMatrix = (projectMatrix in file("serverless/aws/cdk"))
     assembly / assemblyJarName := "tapir-aws-cdk.jar",
     libraryDependencies ++= Seq(
       "io.circe" %% "circe-yaml" % Versions.circeYaml,
-      "io.circe" %% "circe-generic" % Versions.circe,
-      "io.circe" %%% "circe-parser" % Versions.circe,
+      "io.github.florian3k.circe" %% "circe-generic" % Versions.circe,
+      "io.github.florian3k.circe" %%% "circe-parser" % Versions.circe,
       "org.typelevel" %%% "cats-effect" % Versions.catsEffect,
       "com.amazonaws" % "aws-lambda-java-runtime-interface-client" % Versions.awsLambdaInterface
     )
@@ -1933,8 +1948,8 @@ lazy val awsTerraform: ProjectMatrix = (projectMatrix in file("serverless/aws/te
     name := "tapir-aws-terraform",
     libraryDependencies ++= Seq(
       "io.circe" %% "circe-yaml" % Versions.circeYaml,
-      "io.circe" %% "circe-generic" % Versions.circe,
-      "io.circe" %% "circe-literal" % Versions.circe,
+      "io.github.florian3k.circe" %% "circe-generic" % Versions.circe,
+      "io.github.florian3k.circe" %% "circe-literal" % Versions.circe,
       "org.typelevel" %% "jawn-parser" % "1.6.0"
     )
   )
@@ -2028,23 +2043,23 @@ lazy val sttpClient: ProjectMatrix = (projectMatrix in file("client/sttp-client"
     scalaVersions = scala2And3Versions,
     settings = commonJvmSettings ++ Seq(
       libraryDependencies ++= Seq(
-        "com.softwaremill.sttp.client3" %% "fs2" % Versions.sttp % Test,
-        "com.softwaremill.sttp.client3" %% "zio" % Versions.sttp % Test,
-        "com.softwaremill.sttp.client3" %% "pekko-http-backend" % Versions.sttp % Test,
-        "com.softwaremill.sttp.client3" %% "async-http-client-backend-fs2" % Versions.sttp % Test,
-        "com.softwaremill.sttp.shared" %% "fs2" % Versions.sttpShared % Optional,
-        "com.softwaremill.sttp.shared" %% "zio" % Versions.sttpShared % Optional,
-        "com.softwaremill.sttp.shared" %% "pekko" % Versions.sttpShared % Optional,
-        "org.apache.pekko" %% "pekko-stream" % Versions.pekkoStreams % Optional
+        // "com.softwaremill.sttp.client3" %% "fs2" % Versions.sttp % Test,
+        // "com.softwaremill.sttp.client3" %% "zio" % Versions.sttp % Test,
+        // "com.softwaremill.sttp.client3" %% "pekko-http-backend" % Versions.sttp % Test,
+        // "com.softwaremill.sttp.client3" %% "async-http-client-backend-fs2" % Versions.sttp % Test,
+        // "io.github.florian3k.sttp.shared" %% "fs2" % Versions.sttpShared % Optional,
+        // "io.github.florian3k.sttp.shared" %% "zio" % Versions.sttpShared % Optional,
+        // "io.github.florian3k.sttp.shared" %% "pekko" % Versions.sttpShared % Optional,
+        // "org.apache.pekko" %% "pekko-stream" % Versions.pekkoStreams % Optional
       ),
       libraryDependencies ++= {
         CrossVersion.partialVersion(scalaVersion.value) match {
           case Some((3, _)) => Nil
           case _            =>
             Seq(
-              "com.softwaremill.sttp.shared" %% "akka" % Versions.sttpShared % Optional,
-              "com.softwaremill.sttp.client3" %% "akka-http-backend" % Versions.sttp % Test,
-              "com.typesafe.akka" %% "akka-stream" % Versions.akkaStreams % Optional
+              // "io.github.florian3k.sttp.shared" %% "akka" % Versions.sttpShared % Optional,
+              // "com.softwaremill.sttp.client3" %% "akka-http-backend" % Versions.sttp % Test,
+              // "com.typesafe.akka" %% "akka-stream" % Versions.akkaStreams % Optional
             )
         }
       }
@@ -2057,8 +2072,8 @@ lazy val sttpClient: ProjectMatrix = (projectMatrix in file("client/sttp-client"
         "io.github.cquiroz" %%% "scala-java-time" % Versions.jsScalaJavaTime % Test,
         "com.softwaremill.sttp.client3" %%% "fs2" % Versions.sttp % Test,
         "com.softwaremill.sttp.client3" %%% "zio" % Versions.sttp % Test,
-        "com.softwaremill.sttp.shared" %%% "fs2" % Versions.sttpShared % Optional,
-        "com.softwaremill.sttp.shared" %%% "zio" % Versions.sttpShared % Optional
+        "io.github.florian3k.sttp.shared" %%% "fs2" % Versions.sttpShared % Optional,
+        "io.github.florian3k.sttp.shared" %%% "zio" % Versions.sttpShared % Optional
       )
     )
   )
@@ -2077,22 +2092,22 @@ lazy val sttpClient4: ProjectMatrix = (projectMatrix in file("client/sttp-client
     scalaVersions = scala2And3Versions,
     settings = commonJvmSettings ++ Seq(
       libraryDependencies ++= Seq(
-        "com.softwaremill.sttp.client4" %% "fs2" % Versions.sttp4 % Test,
-        "com.softwaremill.sttp.client4" %% "zio" % Versions.sttp4 % Test,
-        "com.softwaremill.sttp.client4" %% "pekko-http-backend" % Versions.sttp4 % Test,
-        "com.softwaremill.sttp.shared" %% "fs2" % Versions.sttpShared % Optional,
-        "com.softwaremill.sttp.shared" %% "zio" % Versions.sttpShared % Optional,
-        "com.softwaremill.sttp.shared" %% "pekko" % Versions.sttpShared % Optional,
-        "org.apache.pekko" %% "pekko-stream" % Versions.pekkoStreams % Optional
+        // "com.softwaremill.sttp.client4" %% "fs2" % Versions.sttp4 % Test,
+        // "com.softwaremill.sttp.client4" %% "zio" % Versions.sttp4 % Test,
+        // "com.softwaremill.sttp.client4" %% "pekko-http-backend" % Versions.sttp4 % Test,
+        // "com.softwaremill.sttp.shared" %% "fs2" % Versions.sttpShared % Optional,
+        // "com.softwaremill.sttp.shared" %% "zio" % Versions.sttpShared % Optional,
+        // "com.softwaremill.sttp.shared" %% "pekko" % Versions.sttpShared % Optional,
+        // "org.apache.pekko" %% "pekko-stream" % Versions.pekkoStreams % Optional
       ),
       libraryDependencies ++= {
         CrossVersion.partialVersion(scalaVersion.value) match {
           case Some((3, _)) => Nil
           case _            =>
             Seq(
-              "com.softwaremill.sttp.shared" %% "akka" % Versions.sttpShared % Optional,
-              "com.softwaremill.sttp.client4" %% "akka-http-backend" % Versions.sttp4 % Test,
-              "com.typesafe.akka" %% "akka-stream" % Versions.akkaStreams % Optional
+              // "com.softwaremill.sttp.shared" %% "akka" % Versions.sttpShared % Optional,
+              // "com.softwaremill.sttp.client4" %% "akka-http-backend" % Versions.sttp4 % Test,
+              // "com.typesafe.akka" %% "akka-stream" % Versions.akkaStreams % Optional
             )
         }
       }
@@ -2102,11 +2117,11 @@ lazy val sttpClient4: ProjectMatrix = (projectMatrix in file("client/sttp-client
     scalaVersions = scala2And3Versions,
     settings = commonJsSettings ++ Seq(
       libraryDependencies ++= Seq(
-        "io.github.cquiroz" %%% "scala-java-time" % Versions.jsScalaJavaTime % Test,
-        "com.softwaremill.sttp.client4" %%% "fs2" % Versions.sttp4 % Test,
-        "com.softwaremill.sttp.client4" %%% "zio" % Versions.sttp4 % Test,
-        "com.softwaremill.sttp.shared" %%% "fs2" % Versions.sttpShared % Optional,
-        "com.softwaremill.sttp.shared" %%% "zio" % Versions.sttpShared % Optional
+        // "io.github.cquiroz" %%% "scala-java-time" % Versions.jsScalaJavaTime % Test,
+        // "com.softwaremill.sttp.client4" %%% "fs2" % Versions.sttp4 % Test,
+        // "com.softwaremill.sttp.client4" %%% "zio" % Versions.sttp4 % Test,
+        // "com.softwaremill.sttp.shared" %%% "fs2" % Versions.sttpShared % Optional,
+        // "com.softwaremill.sttp.shared" %%% "zio" % Versions.sttpShared % Optional
       )
     )
   )
@@ -2157,8 +2172,8 @@ lazy val openapiCodegenCore: ProjectMatrix = (projectMatrix in file("openapi-cod
   .settings(
     name := "tapir-openapi-codegen-core",
     libraryDependencies ++= Seq(
-      "io.circe" %% "circe-core" % Versions.circe,
-      "io.circe" %% "circe-generic" % Versions.circe,
+      "io.github.florian3k.circe" %% "circe-core" % Versions.circe,
+      "io.github.florian3k.circe" %% "circe-generic" % Versions.circe,
       "io.circe" %% "circe-yaml" % Versions.circeYaml,
       scalaTest.value % Test,
       scalaCheck.value % Test,
@@ -2217,7 +2232,7 @@ lazy val examples: ProjectMatrix = (projectMatrix in file("examples"))
   .settings(
     name := "tapir-examples",
     libraryDependencies ++= Seq(
-      "com.softwaremill.sttp.apispec" %% "asyncapi-circe-yaml" % Versions.sttpApispec,
+      "io.github.florian3k.sttp.apispec" %% "asyncapi-circe-yaml" % Versions.sttpApispec,
       "com.softwaremill.sttp.client4" %% "cats" % Versions.sttp4,
       "com.softwaremill.sttp.client4" %% "core" % Versions.sttp4,
       "com.softwaremill.sttp.client4" %% "circe" % Versions.sttp4,
@@ -2305,8 +2320,8 @@ lazy val documentation: ProjectMatrix = (projectMatrix in file("generated-doc"))
     libraryDependencies ++= Seq(
       "org.playframework" %% "play-netty-server" % Versions.playServer,
       "org.http4s" %% "http4s-blaze-server" % Versions.http4sBlazeServer,
-      "com.softwaremill.sttp.apispec" %% "openapi-circe-yaml" % Versions.sttpApispec,
-      "com.softwaremill.sttp.apispec" %% "asyncapi-circe-yaml" % Versions.sttpApispec
+      "io.github.florian3k.sttp.apispec" %% "openapi-circe-yaml" % Versions.sttpApispec,
+      "io.github.florian3k.sttp.apispec" %% "asyncapi-circe-yaml" % Versions.sttpApispec
     )
   )
   .jvmPlatform(scalaVersions = List(documentationScalaVersion), settings = commonJvmSettings)

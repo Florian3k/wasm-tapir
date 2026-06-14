@@ -72,7 +72,7 @@ private[sttp4] trait EndpointToSttpClientBase {
         case RawBodyType.ByteArrayBody        => asByteArrayAlways
         case RawBodyType.ByteBufferBody       => asByteArrayAlways.map(ByteBuffer.wrap)
         case RawBodyType.InputStreamBody      => asByteArrayAlways.map(new ByteArrayInputStream(_))
-        case RawBodyType.FileBody             => asFileAlways(clientOptions.createFile()).map(d => FileRange(d))
+        case RawBodyType.FileBody             => ??? //asFileAlways(clientOptions.createFile()).map(d => FileRange(d))
         case RawBodyType.InputStreamRangeBody => asByteArrayAlways.map(b => InputStreamRange(() => new ByteArrayInputStream(b)))
         case RawBodyType.MultipartBody(_, _)  => throw new IllegalArgumentException("Multipart bodies aren't supported in responses")
       }
@@ -191,7 +191,7 @@ private[sttp4] trait EndpointToSttpClientBase {
       case RawBodyType.ByteArrayBody        => req.body(encoded)
       case RawBodyType.ByteBufferBody       => req.body(encoded)
       case RawBodyType.InputStreamBody      => req.body(encoded)
-      case RawBodyType.FileBody             => req.body(encoded.file)
+      case RawBodyType.FileBody             => ??? //req.body(encoded.file)
       case RawBodyType.InputStreamRangeBody => req.body(encoded.inputStream())
       case m: RawBodyType.MultipartBody     =>
         val parts: Seq[Part[BasicBodyPart]] = (encoded: Seq[RawPart]).flatMap { p =>
@@ -219,7 +219,7 @@ private[sttp4] trait EndpointToSttpClientBase {
       case RawBodyType.ByteArrayBody        => multipart(p.name, p.body)
       case RawBodyType.ByteBufferBody       => multipart(p.name, p.body)
       case RawBodyType.InputStreamBody      => multipart(p.name, p.body)
-      case RawBodyType.FileBody             => multipartFile(p.name, p.body.asInstanceOf[FileRange].file)
+      case RawBodyType.FileBody             => ??? //multipartFile(p.name, p.body.asInstanceOf[FileRange].file)
       case RawBodyType.InputStreamRangeBody => multipart(p.name, p.body.inputStream())
       case RawBodyType.MultipartBody(_, _)  => throw new IllegalArgumentException("Nested multipart bodies aren't supported")
     }
